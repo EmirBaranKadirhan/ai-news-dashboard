@@ -16,6 +16,13 @@ const fetchAndSaveNews = async () => {
 
         for (const item of items) {
 
+            const finalImageUrl =
+                item.enclosure?.url ||
+                item.imageUrl ||
+                item['media:content']?.['$']?.url ||
+                (item.content || item.contentSnippet || '').match(/<img[^>]+src=["']([^"']+)["']/i)?.[1] ||
+                null;
+
             const aiData = await summarizeNews(item.summary, item.contentSnippet || item.content)
 
             await News.findOneAndUpdate(
@@ -25,7 +32,7 @@ const fetchAndSaveNews = async () => {
                     link: item.link,
                     content: item.contentSnippet,
                     publishDate: new Date(item.isoDate),
-                    imageUrl: item.imageUrl,
+                    imageUrl: finalImageUrl,
                     aiSummary: aiData.aiSummary,
                     aiCategory: aiData.aiCategory,
                     aiSentiment: aiData.aiSentiment,
