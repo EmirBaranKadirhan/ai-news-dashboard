@@ -9,7 +9,7 @@ const fetchAndSaveNews = async () => {
     try {
         const feed = await parser.parseURL("https://rss.haberler.com/rss.asp");
 
-        const items = feed.items.slice(0, 5)
+        const items = feed.items.slice(0, 9)
         console.log(items)
         // console.log(Object.keys(feed))       ==> bir cok veri gormek yerine icindeki keys gormek icin bu sekilde kullanabiliriz
 

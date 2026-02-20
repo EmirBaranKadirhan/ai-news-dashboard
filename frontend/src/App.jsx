@@ -1,5 +1,14 @@
 import { useState, useEffect } from "react"
 import axios from 'axios'
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 
 
 function App() {
@@ -14,7 +23,7 @@ function App() {
 
       try {
 
-        const response = await axios.get('http://localhost:3000/api/news?page=1&limit=5')
+        const response = await axios.get('http://localhost:3000/api/news?page=1&limit=9')
         setNews(response.data.data)
         console.log(response.data.data)
 
@@ -35,26 +44,38 @@ function App() {
 
       {news.length > 0 ? (
 
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-        news.map((item) => (
-          <div key={item._id}>
+          {news.map((item) => (
+            <div key={item._id}>
 
-            <h3>{item.title}</h3>
-            <p>{item.aiSummary}</p>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem' }}>
-              <span style={{ backgroundColor: '#eef', padding: '2px 8px', borderRadius: '4px' }}>
-                📌 {item.aiCategory}
-              </span>
-              <span>📅 {new Date(item.publishDate).toLocaleDateString('tr-TR')}</span>
-              <div>
-                <img src={item.imageUrl} alt="" width={400} />
-              </div>
+              <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                <div className="flex justify-center items-center">
+                  <img src={item.imageUrl} alt="" width={400} className=" h-48 object-cover" />
+                </div>
+
+                <CardHeader>
+                  <CardTitle>{item.title}</CardTitle>
+                  <CardDescription>{item.aiSummary}</CardDescription>
+                  <CardAction>Card Action</CardAction>
+                </CardHeader>
+                <CardContent>
+                  <p>📌 {item.aiCategory}</p>
+                </CardContent>
+                <CardFooter>
+                  <p>📅 {new Date(item.publishDate).toLocaleDateString('tr-TR')}</p>
+                </CardFooter>
+              </Card>
+
+
             </div>
-          </div>
-        ))
+          ))}
 
+        </div>
 
       ) : (<p style={{ textAlign: 'center' }}>Haberler yükleniyor...</p>)}
+
+      <h1 className="text-4xl font-extrabold text-blue-600 uppercase">Tailwind Hazır!</h1>
 
     </div>
   )
