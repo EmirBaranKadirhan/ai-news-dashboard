@@ -3,6 +3,8 @@ const parser = new Parser();
 const News = require('../models/News')
 const { summarizeNews } = require('./aiService')
 
+// HTML Entity Decoder: RSS'ten gelen özel karakterleri (&apos;, &quot; vb.) gerçek karakterlerine dönüştürür
+const { decode } = require('html-entities');
 
 const fetchAndSaveNews = async () => {
 
@@ -16,6 +18,8 @@ const fetchAndSaveNews = async () => {
 
         for (const item of items) {
 
+            const cleanTitle = decode(item.title);      // temizlenen baslik bilgisi
+
             const finalImageUrl =
                 item.enclosure?.url ||
                 item.imageUrl ||
@@ -28,7 +32,7 @@ const fetchAndSaveNews = async () => {
             await News.findOneAndUpdate(
                 { link: item.link },                // Linke göre kontrol edilecek
                 {
-                    title: item.title,
+                    title: cleanTitle,
                     link: item.link,
                     content: item.contentSnippet,
                     publishDate: new Date(item.isoDate),
