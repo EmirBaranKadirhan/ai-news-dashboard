@@ -10,6 +10,16 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
+
 import { Button } from "@/components/ui/button"
 import { Info } from 'lucide-react';
 import { Brain } from 'lucide-react';
@@ -20,16 +30,22 @@ function App() {
   const [totalPages, setTotalPages] = useState(0); // Toplam sayfa sayısı
   const [currentPage, setCurrentPage] = useState(1); // Şu anki sayfa
 
+  const limit = 9; // Sayfa başına gösterilecek haber sayısı
+
   useEffect(() => {
 
     const getNews = async () => {
 
       try {
 
-        const response = await axios.get('http://localhost:3000/api/news?page=1&limit=9')
+        const response = await axios.get(`http://localhost:3000/api/news?page=${currentPage}&limit=${limit}`)
         setNews(response.data.data)
         console.log(response.data.data)
 
+        const total = response.data.total
+        const calculatedTotalPages = Math.ceil(total / limit);  // Toplam sayfa sayısını hesapla
+        setTotalPages(calculatedTotalPages)     
+        console.log(calculatedTotalPages)
 
       } catch (error) {
         console.log(error)
@@ -38,7 +54,7 @@ function App() {
     }
     getNews();
 
-  }, [])
+  }, [currentPage])     // currentPage değiştiğinde haberleri yeniden çek
 
   return (
 
@@ -100,8 +116,44 @@ function App() {
 
       ) : (<p style={{ textAlign: 'center' }}>Haberler yükleniyor...</p>)}
 
+<Pagination className="mt-6">
+      <PaginationContent>
+        <PaginationItem>                                      {/* Math.max => İçine yazılan sayılardan hangisi büyükse onu seçer */}
+          <PaginationPrevious onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}   
+            className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+          />   
+        </PaginationItem>
+       
+        {/* Sayfa Numaralarını Dinamik Oluşturma */}
+    {[...Array(totalPages)].map((_, index) => {
+  
+      const pageNumber = index + 1;
+      return (
+        <PaginationItem key={pageNumber}>
+          <PaginationLink
+            onClick={() => setCurrentPage(pageNumber)}
+            isActive={currentPage === pageNumber}
+          >
+            {pageNumber}
+          </PaginationLink>
+        </PaginationItem>
+      );
+    })}
+       
+        <PaginationItem>                                      {/* Math.min ==> Bu sayılardan en küçüğünü seçer */}           
+          <PaginationNext onClick={() => setCurrentPage(prev => Math.min(prev +1, totalPages))}
+          className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+          
+          />  
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+ 
+
 
     </div>
+
+    
   )
 }
 
