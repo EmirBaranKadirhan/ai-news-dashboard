@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 
-const categories = ["Hepsi", "Ekonomi", "Teknoloji", "Spor", "Sağlık", "Dünya", "Magazin"];
+const categories = ["Hepsi", "Ekonomi", "Siyaset", "Teknoloji", "Spor", "Sağlık", "Dünya", "Magazin"];
 
 
 

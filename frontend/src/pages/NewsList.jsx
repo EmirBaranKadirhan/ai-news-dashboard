@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/pagination"
 
 import { Button } from "@/components/ui/button"
-import { Info, Brain } from 'lucide-react';
+import { Info, Brain, Newspaper } from 'lucide-react';
 import CategoryFilter from "../components/categoryFilter";
 import NewsSkeleton from "../components/NewsSkeleton";
 
@@ -63,24 +63,24 @@ function NewsList() {
 
     return (
 
-        <div>
-            <header className="border-b bg-background/60 backdrop-blur mb-10 pb-6">
+        <div className="container mx-auto px-4 max-w-7xl">
+            <header className="border-b bg-background/60 backdrop-blur pb-8 pt-6">
 
-                <div className="flex items-center gap-3">
-                    <Brain className="text-primary/80" size={32} strokeWidth={2.2} />
+                <div className="flex items-center gap-4">
+                    <Brain className="text-primary/80" size={40} strokeWidth={2.2} />
 
-                    <div>
-                        <h1 className="text-3xl font-semibold tracking-tight text-foreground">
+                    <div className="flex flex-col justify-center">
+                        <h1 className="text-4xl font-bold tracking-tight text-foreground leading-tight">
                             Akıllı Haber Özeti
                         </h1>
 
 
-                        <p className="text-muted-foreground/80 text-sm mt-1 max-w-xl">
+                        <p className="text-muted-foreground text-sm font-medium">
                             Güncel haberlerin yapay zeka tarafından özetlenmiş hali
                         </p>
                     </div>
                 </div>
-                <div className="pt-10">
+                <div className="mt-8    ">
                     <CategoryFilter
                         selectedCategory={selectedCategory}
                         onCategoryChange={(item) => {
@@ -141,8 +141,16 @@ function NewsList() {
                 </div>
             ) : (
                 // en son durum veri yüklendi ama hiç haber bulunamadı
-                <div className="text-center py-20 text-muted-foreground">
-                    Bu kategoride henüz bir haber bulunmuyor.
+                <div className="flex flex-col items-center justify-center py-24 text-center space-y-6 bg-muted/20 rounded-3xl border-2 border-dashed border-muted">
+                    <div className="p-6 bg-background rounded-full shadow-sm">
+                        <Newspaper size={64} className="text-muted-foreground/40" />
+                    </div>
+                    <div className="space-y-2">
+                        <h3 className="text-2xl font-semibold text-foreground">Şu an buralar biraz ıssız...</h3>
+                        <p className="text-muted-foreground max-w-sm mx-auto">
+                            Seçtiğin {selectedCategory} kategorisinde henüz bir haber özeti hazırlamadık. Diğer kategorilere göz atmaya ne dersin?
+                        </p>
+                    </div>
                 </div>
             )}
 

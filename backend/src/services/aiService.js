@@ -18,13 +18,14 @@ const summarizeNews = async (title, content) => {
                     
                     Senden şunları istiyorum:
                     1. Haberi maksimum 35 kelimeyle Türkçe özetle.
-                    2. Haberin kategorisini (Siyaset, Spor, Magazin, Teknoloji, Ekonomi, Genel) seçeneklerinden biri olarak belirle.
-                    
+                    2. Haberin kategorisini (Siyaset, Spor, Magazin, Teknoloji, Ekonomi, Sağlık, Dünya, Genel) seçeneklerinden biri olarak belirle.
+                    3. Haberin duygu durumunu (aiSentiment) SADECE şu üç seçenekten biri olarak belirle: "Olumlu", "Olumsuz", "Nötr".
+
                     Yanıtı MUTLAKA şu JSON formatında ver:
                     { 
                       "aiSummary": "özet buraya", 
                       "aiCategory": "kategori buraya", 
-                      "aiSentiment": "duygu durumu buraya" 
+                      "aiSentiment": "Olumlu/Olumsuz/Nötr" 
                     }`
                 }],
             model: 'llama-3.3-70b-versatile',
