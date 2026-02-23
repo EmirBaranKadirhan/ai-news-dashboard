@@ -17,7 +17,7 @@ const summarizeNews = async (title, content) => {
                     İçerik: ${content}
                     
                     Senden şunları istiyorum:
-                    1. Haberi maksimum 25 kelimeyle Türkçe özetle.
+                    1. Haberi maksimum 35 kelimeyle Türkçe özetle.
                     2. Haberin kategorisini (Siyaset, Spor, Magazin, Teknoloji, Ekonomi, Genel) seçeneklerinden biri olarak belirle.
                     
                     Yanıtı MUTLAKA şu JSON formatında ver:
