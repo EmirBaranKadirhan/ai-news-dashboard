@@ -23,8 +23,9 @@ import {
 
 import { Button } from "@/components/ui/button"
 import { Info, Brain, Newspaper } from 'lucide-react';
-import CategoryFilter from "../components/categoryFilter";
+import CategoryFilter from "../components/CategoryFilter";
 import NewsSkeleton from "../components/NewsSkeleton";
+import SearchBar from "../components/SearchBar"
 
 function NewsList() {
 
@@ -34,6 +35,7 @@ function NewsList() {
     const [selectedCategory, setSelectedCategory] = useState("Hepsi");
     const [isLoading, setIsLoading] = useState(true);
     const limit = 9; // Sayfa başına gösterilecek haber sayısı
+    const [keywords, setKeywords] = useState("")
 
     useEffect(() => {
 
@@ -41,14 +43,25 @@ function NewsList() {
             setIsLoading(true);
             try {
 
-                const response = await axios.get(`http://localhost:3000/api/news?page=${currentPage}&limit=${limit}&category=${selectedCategory}`)
-                setNews(response.data.data)
-                console.log(response.data.data)
+                if (!keywords) {
+                    const response = await axios.get(`http://localhost:3000/api/news?page=${currentPage}&limit=${limit}&category=${selectedCategory}`)
+                    setNews(response.data.data)
+                    console.log(response.data.data)
 
-                const total = response.data.total
-                const calculatedTotalPages = Math.ceil(total / limit);  // Toplam sayfa sayısını hesapla
-                setTotalPages(calculatedTotalPages)
-                console.log(calculatedTotalPages)
+                    const total = response.data.total
+                    const calculatedTotalPages = Math.ceil(total / limit);  // Toplam sayfa sayısını hesapla
+                    setTotalPages(calculatedTotalPages)
+                    console.log(calculatedTotalPages)
+                } else {
+                    const keywordsResponse = await axios.get(`http://localhost:3000/api/news/search?search=${keywords}`)
+                    console.log(keywordsResponse)
+                    setNews(keywordsResponse.data.data)
+
+
+                }
+
+
+
 
             } catch (error) {
                 console.log(error)
@@ -59,7 +72,7 @@ function NewsList() {
         }
         getNews();
 
-    }, [currentPage, selectedCategory])     // currentPage değiştiğinde haberleri yeniden çek
+    }, [currentPage, selectedCategory, keywords])     // currentPage değiştiğinde haberleri yeniden çek
 
     return (
 
@@ -89,6 +102,15 @@ function NewsList() {
                         }}
                     />
                 </div>
+
+                <div className="mt-5 mb-3 flex justify-center">
+                    <SearchBar onSearch={(value) => {
+                        setKeywords(value)
+                        setSelectedCategory("Hepsi")
+                        setCurrentPage(1)
+                    }} />
+                </div>
+
             </header>
 
             {isLoading ? (
