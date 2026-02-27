@@ -32,7 +32,8 @@ const summarizeNews = async (title, content) => {
         });
 
         const text = chatCompletion.choices[0].message.content;
-        const data = JSON.parse(text);
+        const cleanJson = text.replace(/```json|```/g, "").trim();
+        const data = JSON.parse(cleanJson);
         return data;
     } catch (error) {
         console.log("AI Hatası:", error.message);

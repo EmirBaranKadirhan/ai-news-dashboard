@@ -2,7 +2,7 @@ const News = require('../models/News')
 
 
 
-const getAllNews = async (req, res) => {
+const getAllNews = async (req, res, next) => {
 
     try {
 
@@ -40,7 +40,7 @@ const getAllNews = async (req, res) => {
 
 
     } catch (error) {
-        res.status(500).json({ message: "Haberler getirilirken bir hata oluştu", error: error.message });
+        next(error)     // hata middleware' a gider
     }
 
 }
@@ -56,10 +56,42 @@ const getNewsById = async (req, res) => {
         res.json(newItem);
     } catch (error) {
 
-        res.status(500).json({ message: error.message })
+        next(error)
     }
 
 }
 
 
-module.exports = { getAllNews, getNewsById }
+const searchNews = async (req, res, next) => {
+
+    // console.log("--- YENİ ARAMA İSTEĞİ GELDİ ---");
+    // console.log("Query Parametreleri:", req.query);
+
+    try {
+
+        const { search } = req.query;
+
+        if (!search) {
+            return res.status(400).json({ message: "Arama terimi gerekli" })
+        }
+
+        const news = await News.find({
+            $or: [
+                { title: { $regex: search, $options: "i" } },
+                { content: { $regex: search, $options: "i" } }
+            ]
+
+        })
+
+        res.status(200).json({ total: news.length, data: news });
+
+    } catch (error) {
+
+        next(error)
+    }
+
+
+}
+
+
+module.exports = { getAllNews, getNewsById, searchNews }
