@@ -58,7 +58,7 @@ This is also a personal learning project where I practiced building a production
 ## 📂 Project Structure
 
 ```
-newsai/
+ai-news-dashboard/
 ├── backend/
 │   └── src/
 │       ├── config/         # Database connection
