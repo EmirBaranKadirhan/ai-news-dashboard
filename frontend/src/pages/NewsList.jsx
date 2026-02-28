@@ -45,7 +45,7 @@ function NewsList() {
             try {
 
                 if (!keywords) {
-                    const response = await axios.get(`http://localhost:3000/api/news?page=${currentPage}&limit=${limit}&category=${selectedCategory}`)
+                    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/news?page=${currentPage}&limit=${limit}&category=${selectedCategory}`)
                     setNews(response.data.data)
                     console.log(response.data.data)
 
@@ -54,7 +54,7 @@ function NewsList() {
                     setTotalPages(calculatedTotalPages)
                     console.log(calculatedTotalPages)
                 } else {
-                    const keywordsResponse = await axios.get(`http://localhost:3000/api/news/search?search=${keywords}`)
+                    const keywordsResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/news/search?search=${keywords}`)
                     console.log(keywordsResponse)
                     setNews(keywordsResponse.data.data)
 
