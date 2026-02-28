@@ -16,7 +16,7 @@ function NewsDetail() {
     const fetchNewsDetail = async () => {
       try {
 
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/news/${id}`)
+        const response = await axios.get(`http://localhost:3000/api/news/${id}`)
 
         setNews(response.data)
         console.log(response.data)
