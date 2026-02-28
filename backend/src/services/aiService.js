@@ -19,7 +19,7 @@ const summarizeNews = async (title, content) => {
                     Senden şunları istiyorum:
                     1. Haberi maksimum 35 kelimeyle Türkçe özetle.
                     2. Haberin kategorisini (Siyaset, Spor, Magazin, Teknoloji, Ekonomi, Sağlık, Dünya, Genel) seçeneklerinden biri olarak belirle.
-                    3. Haberin duygu durumunu (aiSentiment) SADECE şu üç seçenekten biri olarak belirle: "Olumlu", "Olumsuz", "Nötr".
+                    3. Haberin duygu durumunu (aiSentiment) SADECE şu üç kelimeden biri olarak yaz, başka hiçbir şey yazma: "Olumlu", "Olumsuz", "Nötr".
 
                     Yanıtı MUTLAKA şu JSON formatında ver:
                     { 
@@ -34,7 +34,49 @@ const summarizeNews = async (title, content) => {
         const text = chatCompletion.choices[0].message.content;
         const cleanJson = text.replace(/```json|```/g, "").trim();
         const data = JSON.parse(cleanJson);
+
+        const sentimentMap = {
+
+            "olumlu": "Olumlu",
+            "pozitif": "Olumlu",
+            "Pozitif": "Olumlu",
+
+
+            "olumsuz": "Olumsuz",
+            "negatif": "Olumsuz",
+            "Üzüntü": "Olumsuz",
+            "üzüntü": "Olumsuz",
+            "uzuntu": "Olumsuz",
+            "endişe": "Olumsuz",
+            "endise": "Olumsuz",
+            "Üzüntü": "Olumsuz",
+            "Endişe": "Olumsuz",
+            "negative": "Olumsuz",
+            "Negative": "Olumsuz",
+            "NEGATİVE": "Olumsuz",
+            "üzücü": "Olumsuz",
+            "Üzücü": "Olumsuz",
+            "ÜZÜCÜ": "Olumsuz",
+
+
+            "nötr": "Nötr",
+            "notr": "Nötr",
+            "tarafsız": "Nötr",
+            "tarafsiz": "Nötr",
+            "neutral": "Nötr",
+            "Tarafsiz": "Nötr",
+            "TARAFSIZ": "Nötr",
+            "Tarafsız": "Nötr",
+            "NÖTR": "Nötr",
+            "NOTR": "Nötr"
+
+        };
+
+        const rawSentiment = (data.aiSentiment || "").toLowerCase().trim()
+        data.aiSentiment = sentimentMap[rawSentiment] || "Nötr"
+
         return data;
+
     } catch (error) {
         console.log("AI Hatası:", error.message);
         // Hata durumunda projenin çökmemesi için yedek veri
