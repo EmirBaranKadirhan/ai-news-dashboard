@@ -26,6 +26,7 @@ import { Info, Brain, Newspaper } from 'lucide-react';
 import CategoryFilter from "../components/CategoryFilter";
 import NewsSkeleton from "../components/NewsSkeleton";
 import SearchBar from "../components/SearchBar"
+import SentimentBadge from "@/components/SentimentBadge"
 
 function NewsList() {
 
@@ -142,9 +143,13 @@ function NewsList() {
                                 </CardHeader>
 
                                 <CardContent className="px-4 pt-2 flex-1">
-                                    <p className="flex items-center gap-2 text-sm text-gray-700 font-medium">
-                                        📌 {item.aiCategory}
-                                    </p>
+                                    <div className="flex items-center justify-between w-full">
+                                        <p className="flex items-center gap-1 text-sm text-gray-700 font-medium">
+                                            📌 {item.aiCategory}
+                                        </p>
+
+                                        <SentimentBadge sentiment={item.aiSentiment} />
+                                    </div>
                                 </CardContent>
 
                                 <CardFooter className="px-4 pb-4 mt-auto flex items-center justify-between gap-4 border-t pt-4">
